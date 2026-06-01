@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用国外 AI 工具辅助科研</title>
+    <style>
+        :root {
+            --color-bg: #fafaf9;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-muted: #737373;
+            --color-text-subtle: #a3a3a3;
+            --color-border: #e5e5e5;
+            --color-border-strong: #1a1a1a;
+            --color-accent: #1a1a1a;
+
+            --space-xs: 8px;
+            --space-sm: 12px;
+            --space-md: 24px;
+            --space-lg: 48px;
+            --space-xl: 80px;
+
+            --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+            --font-mono: "SF Mono", "JetBrains Mono", "Menlo", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.75;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 560px;
+            padding: var(--space-xl) var(--space-md);
+        }
+
+        .brand {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            color: var(--color-text-subtle);
+            text-transform: uppercase;
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .brand-line {
+            flex: 1;
+            height: 1px;
+            background: var(--color-border);
+        }
+
+        h1 {
+            margin: 0 0 var(--space-md) 0;
+            font-family: var(--font-serif);
+            font-size: 30px;
+            font-weight: 400;
+            line-height: 1.45;
+        }
+
+        .lead {
+            margin: 0;
+            color: var(--color-text-muted);
+            font-size: 15px;
+        }
+
+        .focus-strip {
+            margin: var(--space-md) 0 0 0;
+            padding: var(--space-md) 0;
+            border-top: 1px solid var(--color-border-strong);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .focus-strip p {
+            margin: 0 0 var(--space-xs) 0;
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        .focus-strip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .focus-strip strong {
+            font-weight: 600;
+        }
+
+        .divider {
+            border: 0;
+            height: 1px;
+            background: var(--color-border);
+            margin: var(--space-lg) 0;
+        }
+
+        .section {
+            margin: 0 0 var(--space-lg) 0;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .quiet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quiet-list li {
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .quiet-list li.priority {
+            padding-left: var(--space-sm);
+            border-left: 2px solid var(--color-border-strong);
+        }
+
+        .platform-link {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--space-md);
+            color: var(--color-text);
+            text-decoration: none;
+            transition: padding-left 0.25s ease, color 0.2s ease;
+        }
+
+        .platform-link::after {
+            content: "→";
+            font-family: var(--font-mono);
+            color: var(--color-text-subtle);
+            flex: 0 0 auto;
+            transition: transform 0.25s ease, color 0.2s ease;
+        }
+
+        .platform-link:hover {
+            padding-left: var(--space-sm);
+            color: var(--color-accent);
+        }
+
+        .platform-link:hover::after {
+            transform: translateX(4px);
+            color: var(--color-accent);
+        }
+
+        .item-title {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--color-text);
+        }
+
+        .item-title strong {
+            font-weight: 600;
+        }
+
+        .item-meta {
+            display: block;
+            color: var(--color-text-muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .tag {
+            display: inline-block;
+            margin-left: var(--space-xs);
+            color: var(--color-text-subtle);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            vertical-align: 1px;
+        }
+
+        .keyline {
+            display: block;
+            margin-top: var(--space-xs);
+            color: var(--color-text);
+            font-size: 12px;
+        }
+
+        .note {
+            margin: var(--space-md) 0 0 0;
+            color: var(--color-text-muted);
+            font-size: 13px;
+        }
+
+        .code-block {
+            margin: var(--space-md) 0;
+            padding: var(--space-md);
+            overflow-x: auto;
+            border: 1px solid var(--color-border);
+            border-left-color: var(--color-border-strong);
+            border-left-width: 2px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre;
+        }
+
+        .subtle-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-sm);
+        }
+
+        .text-link {
+            color: var(--color-text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--color-border-strong);
+        }
+
+        .text-link:hover {
+            color: var(--color-text-muted);
+            border-bottom-color: var(--color-text-muted);
+        }
+
+        .steps {
+            counter-reset: steps;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .steps li {
+            counter-increment: steps;
+            position: relative;
+            padding: 0 0 var(--space-md) 34px;
+            margin-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .steps li::before {
+            content: counter(steps, decimal-leading-zero);
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-subtle);
+        }
+
+        .inline-link {
+            color: var(--color-text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--color-border-strong);
+        }
+
+        .inline-link:hover {
+            color: var(--color-text-muted);
+            border-bottom-color: var(--color-text-muted);
+        }
+
+        .hidden-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px dotted var(--color-text-subtle);
+        }
+
+        .hidden-link:hover {
+            color: var(--color-text);
+            border-bottom-color: var(--color-text);
+        }
+
+        .footer {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--color-text-subtle);
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container>* {
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .brand {
+            animation-delay: 0s;
+        }
+
+        .hero {
+            animation-delay: 0.1s;
+        }
+
+        .divider {
+            animation-delay: 0.2s;
+        }
+
+        .section {
+            animation-delay: 0.3s;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: var(--space-lg) var(--space-md);
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div class="brand">
+            <span>How to Learn</span>
+            <div class="brand-line"></div>
+            <span>AI Research</span>
+        </div>
+
+        <section class="hero">
+            <h1>用国外 AI 工具辅助科研</h1>
+            <p class="lead">AI 更适合做研究助理：帮你读论文、拆结构、润色表达、整理代码、清洗数据和搭建小工具。它不替代原文、数据和你的判断。</p>
+            <div class="focus-strip">
+                <p><strong>默认主力：</strong>ChatGPT 负责阅读、写作、问答和通用科研辅助。</p>
+                <p><strong>强烈推荐：</strong>Codex 桌面 App 负责代码、数据分析、计量回归和本地项目落地。</p>
+                <p><strong>重要补充：</strong>Gemini 适合多模态、图表、网页资料和 Google 生态。</p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <section class="section">
+            <div class="section-label">Recommended</div>
+            <ul class="quiet-list">
+                <li class="priority">
+                    <a class="platform-link" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
+                        <span>
+                            <span class="item-title"><strong>ChatGPT</strong><span class="tag">default</span></span>
+                            <span class="item-meta">默认首选。适合论文理解、英文润色、代码辅助、数据分析和把零散想法整理成研究提纲。一般科研学习和日常使用，GPT 已经够用。</span>
+                            <span class="keyline">重点：覆盖面最广，最适合作为日常科研入口。</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="priority">
+                    <a class="platform-link" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener noreferrer">
+                        <span>
+                            <span class="item-title"><strong>Codex</strong><span class="tag">coding</span></span>
+                            <span class="item-meta">ChatGPT 推出的桌面 App 版本，强烈推荐。适合写代码、改网页、做数据分析、跑计量回归、解释报错，并把科研流程做成可复用工具。</span>
+                            <span class="keyline">重点：能进入本地项目，把分析思路变成可运行文件。</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="priority">
+                    <a class="platform-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">
+                        <span>
+                            <span class="item-title"><strong>Gemini</strong><span class="tag">multimodal</span></span>
+                            <span class="item-meta">同样主推。适合 Google 生态、多模态材料、网页资料理解和搜索辅助。网络门槛相对友好，值得作为 GPT 的并行选择。</span>
+                            <span class="keyline">重点：图表、截图、网页资料和搜索扩展更顺手。</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="platform-link" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
+                        <span>
+                            <span class="item-title">Claude<span class="tag">optional</span></span>
+                            <span class="item-meta">强烈推荐长文档场景。适合读论文、报告、综述和复杂材料，但账号、网络和风控门槛相对更高。</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Tool Profiles</div>
+            <ol class="steps">
+                <li>
+                    <span class="item-title">ChatGPT：综合能力最均衡</span>
+                    <span class="item-meta">适合论文阅读、写作润色、逻辑梳理、代码解释、数据分析思路和日常科研问答。优点是上手快、覆盖面广、稳定性好，作为默认工具很合适。</span>
+                </li>
+                <li>
+                    <span class="item-title">Codex：面向本地项目的执行型助手</span>
+                    <span class="item-meta">适合需要真正动文件、跑流程、改代码的任务。Python、R、SQL、Stata 等工具只要本机已经安装并能在项目里调用，Codex 就可以协助编写脚本、运行检查、整理结果和修复报错。它的特点不是只“回答问题”，而是能在项目目录里把想法落成可运行的分析流程。</span>
+                    <span class="keyline">最值得强调：科研中凡是“反复处理数据、跑模型、改代码”的工作，都应该考虑用 Codex。</span>
+                </li>
+                <li>
+                    <span class="item-title">Gemini：多模态和 Google 生态更顺手</span>
+                    <span class="item-meta">适合处理网页资料、图片、表格、截图、图表解释和搜索方向扩展。它也能做论文阅读、写作和代码辅助，不需要把它只当成资料探索工具。</span>
+                </li>
+                <li>
+                    <span class="item-title">Claude：长文本体验好，但门槛略高</span>
+                    <span class="item-meta">Claude 也能做阅读、写作、代码和总结。它的长文本体验不错，但账号、网络和风控门槛相对更高，所以这里简单作为补充介绍。</span>
+                </li>
+            </ol>
+        </section>
+
+        <section class="section">
+            <div class="section-label">ChatGPT Workflow</div>
+            <ul class="quiet-list">
+                <li>
+                    <span class="item-title">1. 快速判断论文是否值得读</span>
+                    <span class="item-meta">把标题、摘要、关键词发给 GPT，让它判断研究问题、方法、可能贡献和是否与你的课题相关。不要只看 AI 结论，要回到摘要和引言核对。</span>
+                </li>
+                <li>
+                    <span class="item-title">2. 拆解论文结构</span>
+                    <span class="item-meta">让 GPT 按“研究问题、数据、方法、实验、结论、局限、可复现难点”输出。遇到不确定内容，要求它标注“原文未说明”。</span>
+                </li>
+                <li>
+                    <span class="item-title">3. 整理文献综述表</span>
+                    <span class="item-meta">把多篇论文的摘要、方法和结论输入后，让 GPT 生成对比表。字段建议包括：作者年份、问题、数据、方法、结论、局限、与你课题的关系。</span>
+                </li>
+                <li>
+                    <span class="item-title">4. 辅助写作和润色</span>
+                    <span class="item-meta">让 GPT 帮你把中文思路改成英文段落，或者把英文改得更清晰。保留自己的观点，不要让 AI 替你编造实验结果、引用或结论。</span>
+                </li>
+                <li>
+                    <span class="item-title">5. 辅助数据和代码</span>
+                    <span class="item-meta">把报错、数据字段、分析目标发给 GPT，让它解释错误原因、生成 Python/R/SQL 思路，或帮你检查分析流程是否合理。</span>
+                </li>
+            </ul>
+            <div class="code-block">提示词示例：
+你是科研助理。请基于我提供的论文内容输出：
+1. 研究问题
+2. 使用的数据和方法
+3. 主要结论
+4. 局限性
+5. 我必须回到原文核对的关键点
+
+要求：
+- 不要编造原文没有的信息
+- 不确定的地方写“原文未说明”
+- 用 Markdown 表格输出</div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Codex Guide</div>
+            <p class="note">这里说的是 Codex 桌面 App，不是命令行 CLI。ChatGPT 更像对话式研究助理；Codex 桌面 App 更像进入项目目录工作的编程搭档，可以读取文件、修改代码、运行检查，并把网页、脚本、数据处理流程真正落成文件。</p>
+            <ul class="quiet-list">
+                <li class="priority">
+                    <span class="item-title"><strong>强烈推荐的场景</strong><span class="tag">core</span></span>
+                    <span class="item-meta">写代码、做网页、处理 CSV/Excel、清洗数据、画图、写 Python/R/SQL/Stata 脚本、跑计量回归、整理模型输出、解释报错和复现分析流程。科研中凡是“需要把步骤变成代码”的工作，都很适合交给 Codex 协助。</span>
+                    <span class="keyline">重点：把重复性科研流程变成可运行、可复现的代码。</span>
+                </li>
+                <li class="priority">
+                    <span class="item-title"><strong>计量回归怎么用</strong><span class="tag">regression</span></span>
+                    <span class="item-meta">可以直接让 Codex 帮你搭建完整回归分析流程：读取数据、检查缺失值和异常值、生成描述性统计、设定基准回归、加入控制变量、固定效应、聚类稳健标准误、DID、事件研究、工具变量、面板模型，并整理输出表格。最终模型设定、识别假设和经济学解释仍然要自己判断。</span>
+                    <span class="keyline">重点：它能帮你推进流程，但不能替你决定识别策略。</span>
+                </li>
+                <li>
+                    <span class="item-title">数据分析怎么用</span>
+                    <span class="item-meta">把数据字段说明、研究问题、清洗规则、目标图表和回归设定告诉 Codex，让它生成脚本并运行检查。它还能根据结果提示新的稳健性检验、变量构造方式、分组回归、异质性分析和可视化思路。</span>
+                </li>
+                <li>
+                    <span class="item-title">工具边界</span>
+                    <span class="item-meta">Codex 能否直接运行 Python、R、SQL、Stata，取决于你的电脑是否已经安装这些工具、项目是否有可用数据、命令行是否能调用。没有安装时，它仍然可以写代码、解释方法、给分析方案，但不能替本机凭空运行不存在的软件。</span>
+                </li>
+                <li>
+                    <span class="item-title">网页和教程怎么用</span>
+                    <span class="item-meta">可以让 Codex 按指定风格生成页面、调整排版、检查链接、补充截图占位、把 Markdown 文档改成静态网页。</span>
+                </li>
+                <li>
+                    <span class="item-title">不适合直接交给它的内容</span>
+                    <span class="item-meta">账号密码、API Key、未公开课题材料、受保密约束的数据、机构内部订阅链接。敏感内容先脱敏，再让工具处理。</span>
+                </li>
+            </ul>
+
+            <p class="note">安装方式按桌面 App 走，不需要用 npm 安装 CLI。官方 Codex App 页面提供 macOS 和 Windows 版本，下载后用 ChatGPT 账号登录即可。</p>
+
+            <ol class="steps">
+                <li>
+                    <span class="item-title">下载安装桌面 App</span>
+                    <span class="item-meta">打开官方 Codex App 页面，下载 Windows 或 macOS 版本，安装后启动。Windows 用户优先选择官方 Windows 下载入口。</span>
+                </li>
+                <li>
+                    <span class="item-title">登录 ChatGPT 账号</span>
+                    <span class="item-meta">推荐使用开通了 Plus 的 ChatGPT 账号登录。Codex 可随 ChatGPT 计划使用，具体额度以账号里的 Codex 用量页和限制提示为准。</span>
+                </li>
+                <li>
+                    <span class="item-title">选择项目文件夹</span>
+                    <span class="item-meta">选择你要处理的项目目录，例如网页项目、论文数据分析项目或回归代码目录。不要选系统目录，也不要把敏感资料目录直接交给它。</span>
+                </li>
+                <li>
+                    <span class="item-title">选择 Local 模式并开始提问</span>
+                    <span class="item-meta">让 Codex 在本机项目里工作。先让它读目录、总结结构，再要求它写代码、改页面、跑脚本或检查回归结果。</span>
+                </li>
+                <li>
+                    <span class="item-title">给出清楚任务</span>
+                    <span class="item-meta">不要只说“优化一下”。要写清楚目标、输入文件、输出格式、不要改什么、验收标准。</span>
+                    <div class="code-block">示例：请检查这个数据分析项目：
+- 读取 data/raw.csv 和 scripts/regression.py
+- 说明当前回归模型在做什么
+- 检查是否有缺失值、变量命名和固定效应设置问题
+- 如需修改，先给计划，再改代码
+- 最后运行脚本并汇总结果</div>
+                </li>
+                <li>
+                    <span class="item-title">让它提出分析改进</span>
+                    <span class="item-meta">Codex 不只是执行代码，也可以帮你从已有结果里提出下一步分析建议。比如稳健性检验、替代变量、滞后项、交互项、分组样本、安慰剂检验、图表呈现方式等。</span>
+                    <div class="code-block">示例：请基于当前回归结果提出改进方案：
+- 哪些变量需要补充描述性统计
+- 是否需要固定效应或聚类稳健标准误
+- 可以做哪些稳健性检验
+- 可以做哪些异质性分析
+- 输出一份下一步分析清单</div>
+                </li>
+                <li>
+                    <span class="item-title">保留人工审核</span>
+                    <span class="item-meta">Codex 很适合提高效率，但不能替你决定研究设计。涉及删除文件、安装依赖、提交代码、解释回归结论时，都要人工确认。</span>
+                </li>
+            </ol>
+
+            <p class="note">官方安装与入门说明可参考 <a class="text-link" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener noreferrer">OpenAI Codex App</a>。</p>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Plus Value</div>
+            <ul class="quiet-list">
+                <li class="priority">
+                    <span class="item-title"><strong>Plus 会员性价比很高</strong><span class="tag">value</span></span>
+                    <span class="item-meta">如果长期做科研、写代码和数据分析，ChatGPT Plus 很值得开。GPT 网页端负责阅读、写作和问答；Codex 桌面端负责项目文件、代码、脚本和回归流程。</span>
+                    <span class="keyline">重点：网页端 + Codex 桌面端组合，足够覆盖大多数科研工作流。</span>
+                </li>
+                <li>
+                    <span class="item-title">iOS App Store 价格提示</span>
+                    <span class="item-meta">iOS App Store 土耳其区的 ChatGPT Plus 订阅折合约 80 元人民币/月，性价比很高。价格会随汇率、税费、Apple 和 OpenAI 调整变化，购买前以 App Store 实际显示为准，并使用符合平台规则的账号和支付方式。购买使用需要有一个土耳其区的 ios 账号，并在咸鱼、淘宝等购买土耳其区的礼品卡，充值到土区的账户中，就可以开通了，详细的教程可以在 B 站上找到。</span>
+                </li>
+                <li>
+                    <span class="item-title">网页端和 Codex 的额度口径</span>
+                    <span class="item-meta">开通会员后，网页端普通 ChatGPT 使用和 Codex 桌面端的代理任务额度不是简单挤在同一个普通聊天计数里。Codex 有自己的用量页和限制提示；两个渠道相加的话整体额度相对比较大，正常科研、代码和回归分析通常够用，但不是无限。</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Gemini Workflow</div>
+            <ul class="quiet-list">
+                <li>
+                    <span class="item-title">资料探索</span>
+                    <span class="item-meta">Gemini 适合配合 Google 生态做资料探索。可以让它帮你扩展关键词、解释网页内容、整理搜索方向。</span>
+                </li>
+                <li>
+                    <span class="item-title">多模态理解</span>
+                    <span class="item-meta">遇到图表、截图、流程图、公式截图时，可以用 Gemini 做初步解释，再回到原文或数据源确认。</span>
+                </li>
+                <li>
+                    <span class="item-title">和 GPT 搭配</span>
+                    <span class="item-meta">一个实用组合是：Gemini 帮你探索资料和理解图表，GPT 帮你整理逻辑、写作润色和形成最终笔记。</span>
+                </li>
+            </ul>
+            <div class="code-block">Gemini 提示词示例：
+请根据这张图/这段网页内容，帮我：
+1. 解释它在讲什么
+2. 提取关键词
+3. 给出我可以继续搜索的英文检索词
+4. 标注哪些信息需要回到原网页核对</div>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Claude</div>
+            <p class="note">Claude 作为补充即可。它在长文档理解上有优势，但账号、网络和风控门槛相对更高。初学者不必一开始纠结 Claude，先把 GPT、Codex、Gemini 用顺手更重要。</p>
+        </section>
+
+        <section class="section">
+            <div class="section-label">Boundary</div>
+            <p class="note">请只在科研学习、公开资料阅读和合法授权范围内使用这些工具。AI 的回答可能出错，涉及事实、数据、引用和结论时，必须回到论文原文或可信来源核对。</p>
+            <p class="note">如果你需要了解更基础的网络准备工作，可以在合规前提下保持好奇，继续<a class="hidden-link" href="./网页/科学访问网络.html">自由探索</a>。</p>
+        </section>
+
+        <div class="footer">© zskksz · AI Tools for Research</div>
+    </main>
+</body>
+
+</html>
