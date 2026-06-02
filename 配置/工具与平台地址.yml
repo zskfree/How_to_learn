@@ -1,5 +1,5 @@
 元信息:
-  更新时间: "2026-05-31"
+  更新时间: "2026-06-02"
   维护说明: "工具、科研平台和AI平台地址统一维护在本文件；文章只引用条目ID，不重复维护地址。"
   更新优先级:
     - "先检查主推AI平台：chatgpt、claude、gemini。"
@@ -14,9 +14,9 @@
     类型: "网络工具"
     地区: "开源项目"
     推荐等级: "核心工具"
-    官网: "https://github.com/clash-verge-rev/clash-verge-rev"
-    本地安装包: "安装包/Clash.Verge_2.5.1_x64-setup.exe"
-    访问方式: "本地安装"
+    官网: "https://github.com/clash-verge-rev/clash-verge-rev/releases/"
+    本地安装包: "可自行放入安装包目录，但不要提交到 Git。"
+    访问方式: "官网 Releases 下载后本地安装"
     用途: "用于管理代理配置、规则和网络连通性。"
     适用文档:
       - "文档/01-网络基础/Clash-Verge-简介.md"
@@ -24,7 +24,7 @@
       - "文档/02-安装与配置/首次启动与基础设置.md"
     上次检查: "2026-05-31"
     检查周期: "每月"
-    状态: "已下载"
+    状态: "官方 Releases 下载"
 
   google_chrome:
     名称: "Google Chrome"
@@ -223,6 +223,22 @@ AI平台:
       - "文档/04-AI大模型辅助科研/主推平台-GPT-Claude-Gemini.md"
       - "文档/04-AI大模型辅助科研/访问国外AI大模型.md"
     上次检查: "2026-05-31"
+    检查周期: "每月"
+    状态: "待验证"
+
+  codex_app:
+    名称: "Codex"
+    厂商: "OpenAI"
+    地区: "国外"
+    推荐等级: "主推"
+    官网: "https://developers.openai.com/codex/app"
+    访问方式: "桌面 App"
+    用途: "本地项目代码修改、数据分析、脚本运行和科研流程落地。"
+    适用文档:
+      - "index.html"
+      - "文档/04-AI大模型辅助科研/AI平台总览.md"
+      - "文档/04-AI大模型辅助科研/主推平台-GPT-Claude-Gemini.md"
+    上次检查: "2026-06-02"
     检查周期: "每月"
     状态: "待验证"
 

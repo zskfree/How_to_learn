@@ -1,0 +1,10 @@
+{
+  "name": "how-to-learn",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "build:pages": "node scripts/build-pages.mjs"
+  }
+}

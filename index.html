@@ -5,357 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>用国外 AI 工具辅助科研</title>
-    <style>
-        :root {
-            --color-bg: #fafaf9;
-            --color-surface: #ffffff;
-            --color-text: #1a1a1a;
-            --color-text-muted: #737373;
-            --color-text-subtle: #a3a3a3;
-            --color-border: #e5e5e5;
-            --color-border-strong: #1a1a1a;
-            --color-accent: #1a1a1a;
-
-            --space-xs: 8px;
-            --space-sm: 12px;
-            --space-md: 24px;
-            --space-lg: 48px;
-            --space-xl: 80px;
-
-            --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
-            --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
-            --font-mono: "SF Mono", "JetBrains Mono", "Menlo", monospace;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: var(--color-bg);
-            color: var(--color-text);
-            font-family: var(--font-sans);
-            font-size: 15px;
-            line-height: 1.75;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 560px;
-            padding: var(--space-xl) var(--space-md);
-        }
-
-        .brand {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.15em;
-            color: var(--color-text-subtle);
-            text-transform: uppercase;
-            margin-bottom: var(--space-xl);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .brand-line {
-            flex: 1;
-            height: 1px;
-            background: var(--color-border);
-        }
-
-        .brand-github {
-            color: var(--color-text);
-            display: flex;
-            transition: transform 0.2s ease, color 0.2s ease;
-        }
-
-        .brand-github:hover {
-            color: var(--color-accent);
-            transform: scale(1.15);
-        }
-
-        h1 {
-            margin: 0 0 var(--space-md) 0;
-            font-family: var(--font-serif);
-            font-size: 30px;
-            font-weight: 400;
-            line-height: 1.45;
-        }
-
-        .lead {
-            margin: 0;
-            color: var(--color-text-muted);
-            font-size: 15px;
-        }
-
-        .focus-strip {
-            margin: var(--space-md) 0 0 0;
-            padding: var(--space-md) 0;
-            border-top: 1px solid var(--color-border-strong);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .focus-strip p {
-            margin: 0 0 var(--space-xs) 0;
-            font-size: 14px;
-            color: var(--color-text);
-        }
-
-        .focus-strip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .focus-strip strong {
-            font-weight: 600;
-        }
-
-        .divider {
-            border: 0;
-            height: 1px;
-            background: var(--color-border);
-            margin: var(--space-lg) 0;
-        }
-
-        .section {
-            margin: 0 0 var(--space-lg) 0;
-        }
-
-        .section-label {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-sm);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .quiet-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .quiet-list li {
-            padding: var(--space-md) 0;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .quiet-list li.priority {
-            padding-left: var(--space-sm);
-            border-left: 2px solid var(--color-border-strong);
-        }
-
-        .platform-link {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: var(--space-md);
-            color: var(--color-text);
-            text-decoration: none;
-            transition: padding-left 0.25s ease, color 0.2s ease;
-        }
-
-        .platform-link::after {
-            content: "→";
-            font-family: var(--font-mono);
-            color: var(--color-text-subtle);
-            flex: 0 0 auto;
-            transition: transform 0.25s ease, color 0.2s ease;
-        }
-
-        .platform-link:hover {
-            padding-left: var(--space-sm);
-            color: var(--color-accent);
-        }
-
-        .platform-link:hover::after {
-            transform: translateX(4px);
-            color: var(--color-accent);
-        }
-
-        .item-title {
-            display: block;
-            margin-bottom: 4px;
-            color: var(--color-text);
-        }
-
-        .item-title strong {
-            font-weight: 600;
-        }
-
-        .item-meta {
-            display: block;
-            color: var(--color-text-muted);
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .tag {
-            display: inline-block;
-            margin-left: var(--space-xs);
-            color: var(--color-text-subtle);
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            vertical-align: 1px;
-        }
-
-        .keyline {
-            display: block;
-            margin-top: var(--space-xs);
-            color: var(--color-text);
-            font-size: 12px;
-        }
-
-        .note {
-            margin: var(--space-md) 0 0 0;
-            color: var(--color-text-muted);
-            font-size: 13px;
-        }
-
-        .code-block {
-            margin: var(--space-md) 0;
-            padding: var(--space-md);
-            overflow-x: auto;
-            border: 1px solid var(--color-border);
-            border-left-color: var(--color-border-strong);
-            border-left-width: 2px;
-            background: var(--color-surface);
-            color: var(--color-text);
-            font-family: var(--font-mono);
-            font-size: 12px;
-            line-height: 1.7;
-            white-space: pre;
-        }
-
-        .subtle-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--space-sm);
-        }
-
-        .text-link {
-            color: var(--color-text);
-            text-decoration: none;
-            border-bottom: 1px solid var(--color-border-strong);
-        }
-
-        .text-link:hover {
-            color: var(--color-text-muted);
-            border-bottom-color: var(--color-text-muted);
-        }
-
-        .steps {
-            counter-reset: steps;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .steps li {
-            counter-increment: steps;
-            position: relative;
-            padding: 0 0 var(--space-md) 34px;
-            margin-bottom: var(--space-md);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .steps li::before {
-            content: counter(steps, decimal-leading-zero);
-            position: absolute;
-            left: 0;
-            top: 1px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--color-text-subtle);
-        }
-
-        .inline-link {
-            color: var(--color-text);
-            text-decoration: none;
-            border-bottom: 1px solid var(--color-border-strong);
-        }
-
-        .inline-link:hover {
-            color: var(--color-text-muted);
-            border-bottom-color: var(--color-text-muted);
-        }
-
-        .hidden-link {
-            color: inherit;
-            text-decoration: none;
-            border-bottom: 1px dotted var(--color-text-subtle);
-        }
-
-        .hidden-link:hover {
-            color: var(--color-text);
-            border-bottom-color: var(--color-text);
-        }
-
-        .footer {
-            margin-top: var(--space-xl);
-            padding-top: var(--space-md);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--color-text-subtle);
-            letter-spacing: 0.05em;
-            text-align: center;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .container>* {
-            animation: fadeIn 0.6s ease-out backwards;
-        }
-
-        .brand {
-            animation-delay: 0s;
-        }
-
-        .hero {
-            animation-delay: 0.1s;
-        }
-
-        .divider {
-            animation-delay: 0.2s;
-        }
-
-        .section {
-            animation-delay: 0.3s;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: var(--space-lg) var(--space-md);
-            }
-
-            h1 {
-                font-size: 25px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/styles/site.css" />
 </head>
 
 <body>
@@ -364,7 +14,7 @@
             <span>How to Learn</span>
             <div class="brand-line"></div>
             <span>AI Research</span>
-            <a href="https://github.com/zskfree/How_to_learn" target="_blank" rel="noopener noreferrer" class="brand-github" title="GitHub 项目主页">
+            <a href="https://github.com/zskfree/How_to_learn" target="_blank" rel="noopener noreferrer" class="brand-github" aria-label="GitHub" title="GitHub 项目主页">
                 <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
                         d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
@@ -388,41 +38,43 @@
         <section class="section">
             <div class="section-label">Recommended</div>
             <ul class="quiet-list">
-                <li class="priority">
-                    <a class="platform-link" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
-                        <span>
-                            <span class="item-title"><strong>ChatGPT</strong><span class="tag">default</span></span>
-                            <span class="item-meta">默认首选。适合论文理解、英文润色、代码辅助、数据分析和把零散想法整理成研究提纲。一般科研学习和日常使用，GPT 已经够用。</span>
-                            <span class="keyline">重点：覆盖面最广，最适合作为日常科研入口。</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="priority">
-                    <a class="platform-link" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener noreferrer">
-                        <span>
-                            <span class="item-title"><strong>Codex</strong><span class="tag">coding</span></span>
-                            <span class="item-meta">ChatGPT 推出的桌面 App 版本，强烈推荐。适合写代码、改网页、做数据分析、跑计量回归、解释报错，并把科研流程做成可复用工具。</span>
-                            <span class="keyline">重点：能进入本地项目，把分析思路变成可运行文件。</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="priority">
-                    <a class="platform-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">
-                        <span>
-                            <span class="item-title"><strong>Gemini</strong><span class="tag">multimodal</span></span>
-                            <span class="item-meta">同样主推。适合 Google 生态、多模态材料、网页资料理解和搜索辅助。网络门槛相对友好，值得作为 GPT 的并行选择。</span>
-                            <span class="keyline">重点：图表、截图、网页资料和搜索扩展更顺手。</span>
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a class="platform-link" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
-                        <span>
-                            <span class="item-title">Claude<span class="tag">optional</span></span>
-                            <span class="item-meta">强烈推荐长文档场景。适合读论文、报告、综述和复杂材料，但账号、网络和风控门槛相对更高。</span>
-                        </span>
-                    </a>
-                </li>
+                <!-- generated:recommended-platforms:start -->
+            <li class="priority">
+                <a class="platform-link" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
+                    <span>
+                        <span class="item-title"><strong>ChatGPT</strong><span class="tag">default</span></span>
+                        <span class="item-meta">默认首选。适合论文理解、英文润色、代码辅助、数据分析和把零散想法整理成研究提纲。一般科研学习和日常使用，GPT 已经够用。</span>
+                        <span class="keyline">重点：覆盖面最广，最适合作为日常科研入口。</span>
+                    </span>
+                </a>
+            </li>
+            <li class="priority">
+                <a class="platform-link" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener noreferrer">
+                    <span>
+                        <span class="item-title"><strong>Codex</strong><span class="tag">coding</span></span>
+                        <span class="item-meta">ChatGPT 推出的桌面 App 版本，强烈推荐。适合写代码、改网页、做数据分析、跑计量回归、解释报错，并把科研流程做成可复用工具。</span>
+                        <span class="keyline">重点：能进入本地项目，把分析思路变成可运行文件。</span>
+                    </span>
+                </a>
+            </li>
+            <li class="priority">
+                <a class="platform-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">
+                    <span>
+                        <span class="item-title"><strong>Gemini</strong><span class="tag">multimodal</span></span>
+                        <span class="item-meta">同样主推。适合 Google 生态、多模态材料、网页资料理解和搜索辅助。网络门槛相对友好，值得作为 GPT 的并行选择。</span>
+                        <span class="keyline">重点：图表、截图、网页资料和搜索扩展更顺手。</span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="platform-link" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
+                    <span>
+                        <span class="item-title">Claude<span class="tag">optional</span></span>
+                        <span class="item-meta">强烈推荐长文档场景。适合读论文、报告、综述和复杂材料，但账号、网络和风控门槛相对更高。</span>
+                    </span>
+                </a>
+            </li>
+            <!-- generated:recommended-platforms:end -->
             </ul>
         </section>
 

@@ -1,0 +1,8 @@
+# Local binary installers should not be committed.
+安装包/*.exe
+安装包/*.msi
+安装包/*.zip
+
+# Node/npm local state.
+node_modules/
+npm-debug.log*
